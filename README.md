@@ -1,4 +1,4 @@
-# zibaidone
+# Zibaidone
 
 个人笔记：数学课程、读书摘记与杂记。
 
