@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>zibaidone · 个人笔记</title>
+<meta name="description" content="个人笔记：数学讲义（测度论、常微分方程等）与读书摘记。民间自发整理，与任何组织无关。">
+<style>
+  :root{--bg:#fff;--fg:#24292f;--mut:#57606a;--line:#e5e9ef;--card:#f6f8fa;--link:#0969da;--acc:#2f5d8a}
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0d1117;--fg:#e6edf3;--mut:#9198a1;--line:#252c34;--card:#161b22;--link:#6cb6ff;--acc:#7fb2e0}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);line-height:1.75;
+       font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:3.2rem 1.2rem 5rem}
+  h1{font-size:2rem;margin:0 0 .3rem;letter-spacing:.02em}
+  .sub{color:var(--mut);margin:0 0 .2rem}
+  .rule{height:1px;background:var(--line);margin:1.8rem 0}
+  h2{font-size:1.1rem;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  ul.list{list-style:none;margin:0;padding:0}
+  ul.list li{background:var(--card);border:1px solid var(--line);border-radius:10px;
+             padding:.9rem 1.1rem;margin-bottom:.7rem}
+  .t{font-weight:600}
+  .m{color:var(--mut);font-size:.88rem;margin-top:.15rem}
+  .acts{margin-top:.45rem;font-size:.9rem}
+  .acts a{margin-right:1rem}
+  a{color:var(--link);text-decoration:none}
+  a:hover{text-decoration:underline}
+  footer{margin-top:3.5rem;padding-top:1.2rem;border-top:1px solid var(--line);
+         color:var(--mut);font-size:.88rem}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;font-size:.86em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>zibaidone</h1>
+  <p class="sub">个人笔记：数学讲义、读书摘记与杂记。</p>
+  <p class="sub">名字化用自古典语词的「杂记本」，此处按个人习惯拼作 <code>zibaidone</code>。</p>
+
+  <div class="rule"></div>
+
+  <h2>数学讲义</h2>
+  <ul class="list" id="mathList">
+    <li>
+      <div class="t">测度论笔记</div>
+      <div class="m">2025–2026 秋 · 98 页 · 参考 Folland、Schilling 等</div>
+      <div class="acts">
+        <a href="notes/math/Zavalon-MT-notes.pdf">在线阅读 / 下载 PDF</a>
+        <a href="https://github.com/Zava1on/zibaidone/blob/main/notes/math/Zavalon-MT-notes.pdf">在 GitHub 打开</a>
+      </div>
+    </li>
+    <li>
+      <div class="t">常微分方程复习笔记</div>
+      <div class="m">版本 2026-09-24 · 150 页</div>
+      <div class="acts">
+        <a href="notes/math/Zavalon-ODE-notes.pdf">在线阅读 / 下载 PDF</a>
+        <a href="https://github.com/Zava1on/zibaidone/blob/main/notes/math/Zavalon-ODE-notes.pdf">在 GitHub 打开</a>
+      </div>
+    </li>
+  </ul>
+  <p class="sub" style="font-size:.86rem">命名规则 <code>Zavalon-&lt;课程代号&gt;-notes.pdf</code>；上表之外的 PDF 会在页面加载时自动补进来。</p>
+
+  <h2>其它</h2>
+  <ul class="list">
+    <li>
+      <div class="t">读书摘记 / 杂记</div>
+      <div class="m">以 Markdown 形式放在仓库里：<code>notes/reading/</code>、<code>notes/misc/</code></div>
+      <div class="acts"><a href="https://github.com/Zava1on/zibaidone">在 GitHub 浏览</a></div>
+    </li>
+  </ul>
+
+  <footer>
+    <p>
+      <a href="https://zava1on.github.io/">个人主页</a> ·
+      <a href="https://zava1on.github.io/tgbook/">课程指南</a> ·
+      <a href="https://zava1on.github.io/tgbook/exams/">历年试题索引</a> ·
+      <a href="https://zava1on.github.io/tgbook/others/textbooks/">课程教材一览</a> ·
+      <a href="https://github.com/Zava1on/zibaidone">仓库</a>
+    </p>
+    <p>民间自发整理，与任何组织无关。</p>
+  </footer>
+
+</div>
+
+<script>
+// 若有人往 notes/math/ 里加了新 PDF，自动补进列表（拿不到 API 时静默跳过）
+(function () {
+  var known = ["Zavalon-MT-notes.pdf", "Zavalon-ODE-notes.pdf"];
+  var box = document.getElementById("mathList");
+  fetch("https://api.github.com/repos/Zava1on/zibaidone/contents/notes/math")
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (items) {
+      items.filter(function (x) { return /\.pdf$/i.test(x.name) && known.indexOf(x.name) === -1; })
+        .forEach(function (x) {
+          var li = document.createElement("li");
+          var title = x.name.replace(/^Zavalon-/, "").replace(/-notes\.pdf$/i, "");
+          li.innerHTML = '<div class="t">' + title + '</div>' +
+            '<div class="m">' + Math.round(x.size / 1024) + ' KB</div>' +
+            '<div class="acts"><a href="notes/math/' + x.name + '">在线阅读 / 下载 PDF</a>' +
+            '<a href="' + x.html_url + '">在 GitHub 打开</a></div>';
+          box.appendChild(li);
+        });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
